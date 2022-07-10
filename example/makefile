@@ -1,10 +1,18 @@
 CC=g++
-CFLAGS=-Wall -std=c++17 -pthread
+INCLUDE=../finder/
+CFLAGS=-I$(INCLUDE) -Wall -std=c++17 -pthread -O2
+TARGET=exec
 
-all: mstart
+all: $(TARGET)
 
-mstart: main.cpp ../finder/finder.cpp
-	$(CC) $(CFLAGS) main.cpp ../finder/finder.cpp -o exec.out
+$(TARGET): main.o finder.o
+	$(CC) $(CFLAGS) main.o finder.o -o $(TARGET).out
+
+main.o: main.cpp
+	$(CC) $(CFLAGS) main.cpp -c
+
+finder.o: $(INCLUDE)finder.cpp $(INCLUDE)finder.hpp
+	$(CC) $(CFLAGS) $(INCLUDE)finder.cpp -c
 
 clean:
-	rm -rf *.o mstart
+	rm -rf *.o $(TARGET)
