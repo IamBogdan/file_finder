@@ -1,18 +1,18 @@
-CC=g++
+CC=gcc
 INCLUDE=../finder/
-CFLAGS=-I$(INCLUDE) -Wall -std=c++17 -pthread -O2
+FLAGS=-I$(INCLUDE) -pthread -Wall -g -std=gnu99
 TARGET=exec
 
 all: $(TARGET)
 
-$(TARGET): main.o finder.o
-	$(CC) $(CFLAGS) main.o finder.o -o $(TARGET).out
+$(TARGET): main.c $(INCLUDE)file_finder.c file_finder.o
+	$(CC) $(FLAGS) -o $(TARGET) main.c file_finder.o
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -c
+file_finder.o: $(INCLUDE)file_finder.c $(INCLUDE)file_finder.h
+	$(CC) -c $(FLAGS) $(INCLUDE)file_finder.c
 
-finder.o: $(INCLUDE)finder.cpp $(INCLUDE)finder.hpp
-	$(CC) $(CFLAGS) $(INCLUDE)finder.cpp -c
+run: exec
+	./exec
 
 clean:
 	rm -rf *.o $(TARGET)
